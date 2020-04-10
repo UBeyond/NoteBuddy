@@ -1,0 +1,65 @@
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width, user-scalable=no">
+		<title>NoteBuddy</title>
+		<link href="https://fonts.googleapis.com/css2?family=Rubik&display=swap" rel="stylesheet">
+		<link href="https://cdn.jsdelivr.net/npm/boxicons@2.0.5/css/boxicons.min.css" rel="stylesheet">
+		<link href="css/notebook.css" rel="stylesheet">
+	</head>
+	<body>
+        <div id="app">
+			<div id="header">
+				<img src="images/logo.png">
+			</div>
+			<span id="buddyMsgDynamic" onclick="app.deleteBuddyMessage();"></span>
+			<div id="preview"></div>
+			<canvas id="canvas" @click="draw"></canvas>
+			<div id="colorSelectorPopup" style="display: none;">
+				<div class="changeColor blackBg" onclick="app.updateColor('black');"></div>
+				<div class="changeColor redBg" onclick="app.updateColor('red');"></div>
+				<div class="changeColor orangeBg" onclick="app.updateColor('orange');"></div>
+				<div class="changeColor greenBg" onclick="app.updateColor('green');"></div>
+				<div class="changeColor blueBg" onclick="app.updateColor('blue');"></div>
+				<div class="changeColor purpleBg" onclick="app.updateColor('purple');"></div>
+			</div>
+			<div id="brushSelectorPopup" style="display: none;">
+				<div class="changeBrush small" onclick="app.updateBrush('small');"></div>
+				<div class="changeBrush medium" onclick="app.updateBrush('medium');"></div>
+				<div class="changeBrush large" onclick="app.updateBrush('large');"></div>
+			</div>
+			<div id="textSelectorPopup" style="display: none;">
+				<p class="description">Sometimes drawing just won't cut it. Type the text you'd like to add instead.</p>
+				<form>
+					<textarea placeholder="Text to add..."></textarea>
+					<button type="submit">Add Text</button>
+				</form>
+			</div>
+			<div id="nav">
+				<div id="navButtons">
+				<div id="colorSelector" v-bind:class="color + 'Bg'" onclick="app.showColorSelector();"><i class="bx bxs-color-fill"></i></div>
+					<div id="brushSelector" onclick="app.showBrushSelector();"><i class="bx bxs-paint"></i></div>
+					<div id="eraserSelector" onclick="app.updateBrush('eraser');"><i class="bx bxs-eraser"></i></div>
+					<div id="pictureSelector"><i class="bx bxs-photo-album"></i></div>
+					<div id="videoSelector"><i class="bx bxl-youtube"></i></div>
+					<div id="linkSelector"><i class="bx bx-link"></i></div>
+				</div>
+			</div>
+			<div id="chatWrapper" style="display: none;">
+				<div id="chatLog"></div>
+				<div id="chat">
+					<form id="sendMessageForm">
+						<textarea placeholder="Say something nice..." id="sendMessageTextarea"></textarea>
+						<button type="submit"><i class="bx bxs-send"></i></button>
+					</form>
+				</div>
+			</div>
+			<div id="openChat">
+				<button onclick="app.toggleChat();"><i class="bx bxs-chat"></i></button>
+			</div>
+        </div>
+		<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+		<script src="/socket.io/socket.io.js"></script>
+		<script src="js/notebook.js"></script>
+	</body>
+</html>
