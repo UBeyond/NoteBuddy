@@ -16,7 +16,7 @@ var app = new Vue({
     mounted() {
         // Can't access `this` here unless I re-define it. Why?
         let self = this;
-        let socket = io.connect("http://localhost", {
+        let socket = io.connect("https://notebuddysocial.herokuapp.com/", {
             reconnection: true,
             reconnectionDelay: 1000,
             reconnectionDelayMax : 5000,
@@ -200,7 +200,7 @@ var app = new Vue({
             previewSelector.innerHTML = `<img src="${preview}" id="previewImg">`;
         },
         newConnection: function(notebookId, name, userId) {
-            let socket = io.connect("http://localhost", {
+            let socket = io.connect("https://notebuddysocial.herokuapp.com/", {
                 reconnection: true,
                 reconnectionDelay: 1000,
                 reconnectionDelayMax : 5000,
@@ -245,7 +245,7 @@ var app = new Vue({
         },
         sendCursorQueue: function() {
             if (this.cursorQueue.length > 0) {
-                let socket = io.connect("http://localhost", {
+                let socket = io.connect("https://notebuddysocial.herokuapp.com/", {
                     reconnection: true,
                     reconnectionDelay: 1000,
                     reconnectionDelayMax : 5000,
@@ -350,7 +350,7 @@ var app = new Vue({
         },
         sendDrawingQueue: function() {
             if (this.drawingQueue.length > 0) {
-                let socket = io.connect("http://localhost", {
+                let socket = io.connect("https://notebuddysocial.herokuapp.com/", {
                     reconnection: true,
                     reconnectionDelay: 1000,
                     reconnectionDelayMax : 5000,
