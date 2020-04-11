@@ -16,12 +16,13 @@ var app = new Vue({
     mounted() {
         // Can't access `this` here unless I re-define it. Why?
         let self = this;
-        let socket = io.connect("https://notebuddysocial.herokuapp.com/", {
+        let socket = io.connect(self.siteUrl, {
             reconnection: true,
             reconnectionDelay: 1000,
             reconnectionDelayMax : 5000,
             reconnectionAttempts: 99999,
-            pingInterval: 500
+            pingInterval: 500,
+            query: 'notebookId='+self.notebookId
         });
         socket.on("showConnection", function(data) {
             if (data.name !== self.name) {
@@ -168,6 +169,7 @@ var app = new Vue({
         setInterval(self.sendDrawingQueue, 1000);
 	},
 	data: {
+        "siteUrl": `http://localhost`,
         "notebookId": null,
         "name": "Guest",
         "color": "black",
@@ -200,12 +202,13 @@ var app = new Vue({
             previewSelector.innerHTML = `<img src="${preview}" id="previewImg">`;
         },
         newConnection: function(notebookId, name, userId) {
-            let socket = io.connect("https://notebuddysocial.herokuapp.com/", {
+            let socket = io.connect(this.siteUrl, {
                 reconnection: true,
                 reconnectionDelay: 1000,
                 reconnectionDelayMax : 5000,
                 reconnectionAttempts: 99999,
-                pingInterval: 500
+                pingInterval: 500,
+                query: 'notebookId='+notebookId
             });
             socket.emit("newConnection", {
                 notebookId: notebookId,
@@ -245,12 +248,13 @@ var app = new Vue({
         },
         sendCursorQueue: function() {
             if (this.cursorQueue.length > 0) {
-                let socket = io.connect("https://notebuddysocial.herokuapp.com/", {
+                let socket = io.connect(this.siteUrl, {
                     reconnection: true,
                     reconnectionDelay: 1000,
                     reconnectionDelayMax : 5000,
                     reconnectionAttempts: 99999,
-                    pingInterval: 500
+                    pingInterval: 500,
+                    query: 'notebookId='+this.notebookId
                 });
                 socket.emit("sendCursorQueue", this.cursorQueue);
                 // Reset Drawing Queue
@@ -350,12 +354,13 @@ var app = new Vue({
         },
         sendDrawingQueue: function() {
             if (this.drawingQueue.length > 0) {
-                let socket = io.connect("https://notebuddysocial.herokuapp.com/", {
+                let socket = io.connect(this.siteUrl, {
                     reconnection: true,
                     reconnectionDelay: 1000,
                     reconnectionDelayMax : 5000,
                     reconnectionAttempts: 99999,
-                    pingInterval: 500
+                    pingInterval: 500,
+                    query: 'notebookId='+this.notebookId
                 });
                 socket.emit("sendDrawingQueue", this.drawingQueue);
                 // Reset Drawing Queue
