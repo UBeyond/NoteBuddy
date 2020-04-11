@@ -2,7 +2,7 @@ const express = require("express");
 const app = express();
 const server = require("http").Server(app);
 const io = require("socket.io")(server);
-server.listen(80);
+const port = process.env.PORT || 80;
 const path = require("path");
 
 
@@ -48,3 +48,5 @@ io.on("connection", function(socket) {
 		socket.broadcast.to(room).emit("deleteCursor", {userId: userId});
 	});
 });
+
+server.listen(port, () => console.log(`Running On Port: ${port}`)); 
