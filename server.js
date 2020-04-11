@@ -5,6 +5,12 @@ const io = require("socket.io")(server);
 server.listen(80);
 const path = require("path");
 
+
+var notebookId;
+var name;
+var userId;
+var socketId;
+
 app.use(express.static(__dirname + "/public"));
 
 app.get("/", (req, res) => {
@@ -13,39 +19,32 @@ app.get("/", (req, res) => {
 
 app.get("/notebook", (req, res) => {
 	res.sendFile(path.join(__dirname + "/public/pages/notebook.html"));
-})
+});
 
-var notebookId;
-var name;
-var userId;
-var socketId;
-
-function onConnection(socket) {
-	socket.on("newConnection", function(data) {
+io.on("connection", function(socket) {
+    var room = socket.handshake["query"]["notebookId"];
+    socket.join(room);
+    socket.on("newConnection", function(data) {
 		notebookId = data.notebookId;
 		name = data.name;
-		userId = data.userId;
-		socketId = socket.id;
-		socket.join(notebookId);
-		io.to(notebookId).emit("showConnection", data);
+        userId = data.userId;
+        socket.broadcast.to(room).emit("showConnection", data);
 		console.log("new connection");
 	});
 	socket.on("sendMessage", function(data) {
-		socket.broadcast.emit("showMessage", data);
+		socket.broadcast.to(room).emit("showMessage", data);
 	});
 	// Let everybody know cursor location of everybody online.
 	socket.on("sendCursorQueue", function(data) {
-		socket.broadcast.emit("processCursorQueue", data);
+		socket.broadcast.to(room).emit("processCursorQueue", data);
 		//console.log(data);
 	});
 	// Somebody is drawing, let everybody know except the person who is drawing.
     socket.on("sendDrawingQueue", function(data) {
-		socket.broadcast.emit("processDrawingQueue", data);
+		socket.broadcast.to(room).emit("processDrawingQueue", data);
 		//console.log(data);
 	});
 	socket.on("disconnect", function() {
-		socket.broadcast.emit("deleteCursor", {userId: userId});
+		socket.broadcast.to(room).emit("deleteCursor", {userId: userId});
 	});
-}
-
-io.on("connection", onConnection);
+});

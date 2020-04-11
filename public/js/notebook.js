@@ -169,7 +169,7 @@ var app = new Vue({
         setInterval(self.sendDrawingQueue, 1000);
 	},
 	data: {
-        "siteUrl": `http://localhost`,
+        "siteUrl": `https://notebuddysocial.herokuapp.com`,
         "notebookId": null,
         "name": "Guest",
         "color": "black",
